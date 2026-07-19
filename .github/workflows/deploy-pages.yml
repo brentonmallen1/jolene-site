@@ -1,8 +1,9 @@
 # Deploys the site to GitHub Pages.
 #
 # Inert until you enable it: repo Settings → Pages → Source: "GitHub Actions".
-# The site must be served from a domain root (custom domain or a
-# <username>.github.io repo) — see README "Option B — GitHub Pages".
+# Serves from the project subpath (https://<user>.github.io/jolene-site/) by
+# default via BASE_PATH below. Once the custom domain is live, set the repo
+# variable BASE_PATH to "/" — see README "Option B — GitHub Pages".
 
 name: Deploy to GitHub Pages
 
@@ -26,6 +27,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
       - name: Build site
         uses: withastro/action@v3
         with:
@@ -33,6 +36,11 @@ jobs:
         env:
           # canonical URL baked into the build (og tags etc.)
           SITE_URL: ${{ vars.SITE_URL || 'https://www.jolenemallendesigns.com' }}
+          # Defaults to the project-page subpath so the site works at
+          # https://<user>.github.io/jolene-site/ out of the box. Once the
+          # custom domain is live (DNS + Settings → Pages → Custom domain),
+          # set the repo variable BASE_PATH to "/" to serve from root.
+          BASE_PATH: ${{ vars.BASE_PATH || '/jolene-site' }}
 
   deploy:
     needs: build

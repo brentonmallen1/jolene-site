@@ -11,8 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Content Manager — Jolene Mallen Designs</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link
+      rel="cms-config-url"
+      type="text/yaml"
+      href={`${import.meta.env.BASE_URL}admin/config.yml`}
+    />
   </head>
   <body>
     <script is:inline>
@@ -30,6 +34,7 @@
         }
       } catch {}
     </script>
-    <script is:inline type="module" src="/admin/sveltia-cms.js"></script>
+    <script is:inline type="module" src={`${import.meta.env.BASE_URL}admin/sveltia-cms.js`}
+    ></script>
   </body>
 </html>

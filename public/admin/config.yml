@@ -6,13 +6,13 @@
 
 backend:
   name: github
-  repo: OWNER/jolene-site # ← update after pushing to GitHub
+  repo: brentonmallen1/jolene-site
   branch: main
   # base_url: https://sveltia-cms-auth.YOUR-WORKER.workers.dev  # OAuth shim (see README)
 
 site_url: https://www.jolenemallendesigns.com
 display_url: https://www.jolenemallendesigns.com
-logo_url: /favicon.svg
+logo_url: https://www.jolenemallendesigns.com/favicon.svg
 
 # Global media library: the whole site image tree shows up in the CMS "Assets"
 # view (hero/, about/, portfolio/, sketching/, conceptual/, textiles/, uploads/).

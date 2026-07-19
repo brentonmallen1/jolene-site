@@ -35,7 +35,12 @@ const textiles = (await getCollection("textiles"))
   .map((t) => t.data);
 
 const [resumeEntry] = await getCollection("resume");
-const resume = resumeEntry.data;
+// CMS stores site-root paths (e.g. "/resume.pdf"); re-root them under BASE_URL
+// so the link still resolves when served from a GitHub Pages project subpath.
+const resume = {
+  ...resumeEntry.data,
+  pdf: `${import.meta.env.BASE_URL}${resumeEntry.data.pdf.replace(/^\//, "")}`,
+};
 
 // One ordered list drives nav, numbering, and rendering in both themes.
 // Gallery sections come from the CMS (content/galleries/) and can be created,
