@@ -1,0 +1,12 @@
+site_title: Jolene Mallen Designs
+theme: classic
+palette: gallery
+default_mode: dark
+hero:
+  heading: JOLENE MALLEN
+  subheading: DESIGNER
+  image: ../src/assets/images/hero/cabin.webp
+  image_alt: Modern lakeside cabin with a stone patio and fire pit
+footer:
+  email: mallen.jolene@gmail.com
+  linkedin: https://www.linkedin.com/in/jolenemallen/

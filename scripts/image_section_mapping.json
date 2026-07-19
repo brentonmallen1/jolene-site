@@ -1,0 +1,446 @@
+{
+  "hero": [
+    {
+      "file": "Cabin.jpg",
+      "alt": "Cabin.jpg"
+    }
+  ],
+  "about": [
+    {
+      "file": "Headshot.jpg",
+      "alt": "Headshot.jpg"
+    },
+    {
+      "file": "LEED_GAcmyk.jpg",
+      "alt": "LEED badge"
+    }
+  ],
+  "portfolio": [
+    {
+      "file": "Cabin Interior.jpg",
+      "alt": ""
+    },
+    {
+      "file": "White Stairs.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Mid Century LA.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Zen Bathroom .jpg",
+      "alt": ""
+    },
+    {
+      "file": "So Cal Boho Inside.jpg",
+      "alt": ""
+    },
+    {
+      "file": "So Cal Boho Outside.jpg",
+      "alt": ""
+    },
+    {
+      "file": "boho Greenscape.jpg",
+      "alt": ""
+    },
+    {
+      "file": "White Kitchen 2.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Cal Faucets White Kitchen.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Bay Window.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Green Kitchen .jpg",
+      "alt": ""
+    },
+    {
+      "file": "PNW Corner View .jpg",
+      "alt": ""
+    },
+    {
+      "file": "Herb Kitchen.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Brown Traditional Kitchen.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Warm Boho Interior .jpg",
+      "alt": ""
+    },
+    {
+      "file": "warm tone deck.jpg",
+      "alt": ""
+    },
+    {
+      "file": "White Kitchen.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Traditional Fireplace.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Transitional Staircase 2.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Shed Spring.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Shed Summer.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Shed Fall.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Shed Winter.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Golfcourse Railing.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Phillips Statue.jpg",
+      "alt": ""
+    }
+  ],
+  "conceptual": [
+    {
+      "file": "ms spa logo final.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Aroma Plan.jpg",
+      "alt": ""
+    },
+    {
+      "file": "updated ms spa without furniture.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Floor Plan rendered flattened.jpg",
+      "alt": ""
+    },
+    {
+      "file": "section test flattened Resized.jpg",
+      "alt": "section test flattened Resized.jpg"
+    },
+    {
+      "file": "section 2 test flattened Resized.jpg",
+      "alt": "section 2 test flattened Resized.jpg"
+    },
+    {
+      "file": "spa lobby final rendering color.jpg",
+      "alt": ""
+    },
+    {
+      "file": "spa final gym rendering color.jpg",
+      "alt": ""
+    },
+    {
+      "file": "spa bedroom rendering finished.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Spa Final Living Room Color Rendering.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Spa Kitchen Cutout Final Rendering Color.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Final tracks logo design with font_edited.jpg",
+      "alt": ""
+    },
+    {
+      "file": "tea house logo final with text_edited.jpg",
+      "alt": "tea house logo final with text.jpg"
+    },
+    {
+      "file": "zoomed out site plan 9x5.jpg",
+      "alt": ""
+    },
+    {
+      "file": "final floor plan.jpg",
+      "alt": ""
+    },
+    {
+      "file": "canopy system.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Cafe Kitchen.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Sitting Area.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Dog Drinking Zone.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Dog Cubbie Hole.jpg",
+      "alt": ""
+    },
+    {
+      "file": "final office floor plan.jpg",
+      "alt": "final office floor plan.jpg"
+    },
+    {
+      "file": "patio floor plan.jpg",
+      "alt": "patio floor plan.jpg"
+    },
+    {
+      "file": "bathroom elevation new.jpg",
+      "alt": "bathroom elevation new.jpg"
+    },
+    {
+      "file": "waste elevation new.jpg",
+      "alt": "waste elevation new.jpg"
+    },
+    {
+      "file": "locker elevation new.jpg",
+      "alt": "locker elevation new.jpg"
+    },
+    {
+      "file": "Mail room elevations.jpg",
+      "alt": "Mail room elevations.jpg"
+    },
+    {
+      "file": "lighting section 2.jpg",
+      "alt": "lighting section 2.jpg"
+    },
+    {
+      "file": "Lobby Rendering.jpg",
+      "alt": "Lobby Rendering.jpg"
+    },
+    {
+      "file": "Open Work Space Rendering.jpg",
+      "alt": "Open Work Space Rendering.jpg"
+    },
+    {
+      "file": "Conference Room Rendering.jpg",
+      "alt": "Conference Room Rendering.jpg"
+    },
+    {
+      "file": "Kitchen Rendering.jpg",
+      "alt": "Kitchen Rendering.jpg"
+    }
+  ],
+  "sketching": [
+    {
+      "file": "Expensive Cabin Exterior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Expensive Cabin Interior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 5.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Ode to MC Escher Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "section.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Travis Rendering Final 2.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 7.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Knoll Chair Editorial Set PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 4.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Upscale Master Bedroom Sketch JUNE.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Upscale Master Bedroom JUNE.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Pacific North West Home Interior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Pacific North West Home Exterior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Pantry Closet Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 2.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 9.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 11.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 10.jpg",
+      "alt": ""
+    },
+    {
+      "file": "sketch 6.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Upscale Living Room Sketch JUNE.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Upscale Living Room JUNE.jpg",
+      "alt": ""
+    },
+    {
+      "file": "SoCal Spanish Exterior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "SoCal Spanish Interior Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Upscale Bar and Lounge Sketch PIX.jpg",
+      "alt": ""
+    },
+    {
+      "file": "Famous Pieces Editorial Set PIX.jpg",
+      "alt": ""
+    }
+  ],
+  "textiles": [
+    {
+      "file": "Tilly Mirrored 70cm New Square.jpg",
+      "alt": "Pattern: Tilly | Inspired By: Killer Whales"
+    },
+    {
+      "file": "Tilly Deepsea Square.jpg",
+      "alt": "Deepsea"
+    },
+    {
+      "file": "Tilly Sand Square.jpg",
+      "alt": "Sand"
+    },
+    {
+      "file": "Tilly Seaweed Square.jpg",
+      "alt": "Seaweed"
+    },
+    {
+      "file": "Tilly Sting Ray Square.jpg",
+      "alt": "Stingray"
+    },
+    {
+      "file": "Tilly Shark Skin Square.jpg",
+      "alt": "Shark Skin"
+    },
+    {
+      "file": "Tilly Seafoam Square.jpg",
+      "alt": "Seafoam"
+    },
+    {
+      "file": "Tilly Urchin Square.jpg",
+      "alt": "Urchin"
+    },
+    {
+      "file": "jordy diagonal 35cm BW Square.jpg",
+      "alt": "Pattern: Jordy | Inspired By: Space Travel"
+    },
+    {
+      "file": "jordy Graphite Square.jpg",
+      "alt": "Rover"
+    },
+    {
+      "file": "Jordy Navy Square.jpg",
+      "alt": "Neptune"
+    },
+    {
+      "file": "jordy teal Square.jpg",
+      "alt": "Cosmos"
+    },
+    {
+      "file": "jordy teal brown Square.jpg",
+      "alt": "Europa"
+    },
+    {
+      "file": "Jordy Moss Square.jpg",
+      "alt": "Intersteller"
+    },
+    {
+      "file": "Jordy Burgundy Square.jpg",
+      "alt": "Mars"
+    },
+    {
+      "file": "jordy purple Square_edited.jpg",
+      "alt": "Nebula"
+    },
+    {
+      "file": "w15_kets_jm_naomi Square.jpg",
+      "alt": "Pattern: Naomi | Inspired By: The Southwest"
+    },
+    {
+      "file": "NAOMI LATTE Square.jpg",
+      "alt": "Latte"
+    },
+    {
+      "file": "NAOMI BRICK Square.jpg",
+      "alt": "Brick"
+    },
+    {
+      "file": "NAOMI RUST 2 Square.jpg",
+      "alt": "Rust"
+    },
+    {
+      "file": "NAOMI COCOA Square.jpg",
+      "alt": "Cocoa"
+    },
+    {
+      "file": "NAOMI_COCOA Square.jpg",
+      "alt": "Clay"
+    },
+    {
+      "file": "NAOMI SLATE Square.jpg",
+      "alt": "Slate"
+    },
+    {
+      "file": "NAOMI SEAGLASS Square.jpg",
+      "alt": "Seaglass"
+    }
+  ]
+}

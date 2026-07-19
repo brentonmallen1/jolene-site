@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+
+# environment
+.env
+.env.production
+
+# OS
+.DS_Store
+
+# editor-generated local history (VSCode Local History extension)
+.history/
+# Finder duplicate artifacts (e.g. "settings 3.yml") — note: copies inside
+# content/galleries or content/textiles would still be loaded by the CMS globs,
+# so delete them rather than relying on this ignore
+content/**/* [0-9].yml
+content/**/* [0-9].md
+
+# logs
+npm-debug.log*
+
+# source image dump from Wix (only curated copies under src/assets ship with the site)
+/images/
+site-archive/
+
+# generated: Sveltia CMS bundle is copied from node_modules at dev/build time
+public/admin/sveltia-cms.js

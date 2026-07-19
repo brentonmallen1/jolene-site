@@ -1,0 +1,35 @@
+---
+// Sveltia CMS admin. Served as an Astro page so /admin works in dev too
+// (public/ files don't get directory-index resolution from the dev server).
+// The CMS bundle + config stay in public/admin/.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Content Manager — Jolene Mallen Designs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
+  </head>
+  <body>
+    <script is:inline>
+      // Quality-of-life default: stay in the editor after saving instead of
+      // bouncing back to the collection list. Seeded once per browser — if the
+      // user later flips "Close the editor after saving" in the CMS settings,
+      // their choice sticks.
+      try {
+        if (!localStorage.getItem("jmd-prefs-seeded")) {
+          const KEY = "sveltia-cms.prefs";
+          const prefs = JSON.parse(localStorage.getItem(KEY) ?? "{}");
+          prefs.closeOnSave = false;
+          localStorage.setItem(KEY, JSON.stringify(prefs));
+          localStorage.setItem("jmd-prefs-seeded", "1");
+        }
+      } catch {}
+    </script>
+    <script is:inline type="module" src="/admin/sveltia-cms.js"></script>
+  </body>
+</html>

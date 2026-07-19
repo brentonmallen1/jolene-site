@@ -1,0 +1,55 @@
+---
+import "@fontsource-variable/jost/index.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+
+interface Props {
+  title: string;
+  description: string;
+  palette: string;
+  defaultMode: string;
+  ogImage?: string; // site-relative path to a social share image
+}
+
+const { title, description, palette, defaultMode, ogImage } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImageAbs = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="en" data-palette={palette} data-mode={defaultMode}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+    {ogImageAbs && <meta name="twitter:card" content="summary_large_image" />}
+    <script is:inline define:vars={{ defaultMode }}>
+      // Resolve color mode before first paint: visitor choice > OS > site default.
+      (() => {
+        let mode;
+        try {
+          mode = localStorage.getItem("jmd-mode");
+        } catch {}
+        if (mode !== "light" && mode !== "dark") {
+          mode = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : defaultMode;
+        }
+        document.documentElement.dataset.mode = mode;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

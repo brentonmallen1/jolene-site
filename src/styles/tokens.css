@@ -1,0 +1,139 @@
+/* ---------------------------------------------------------------------------
+   Design tokens.
+   Palette is chosen by Jolene in the CMS (data-palette on <html>).
+   Mode (light/dark) is a visitor toggle (data-mode on <html>).
+   All colors OKLCH; neutrals are tinted toward each palette's hue.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* type */
+  --font-sans: "Jost Variable", "Avenir Next", "Century Gothic", sans-serif;
+  --font-display: var(--font-sans);
+  --font-serif: "Fraunces Variable", Georgia, serif;
+
+  --text-xs: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+  --text-sm: clamp(0.85rem, 0.8rem + 0.25vw, 0.95rem);
+  --text-base: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --text-md: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+  --text-lg: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+  --text-xl: clamp(1.9rem, 1.5rem + 2vw, 3.2rem);
+  --text-2xl: clamp(2.6rem, 1.8rem + 4vw, 5rem);
+  --text-hero: clamp(2.4rem, 1.4rem + 5.5vw, 6rem);
+
+  --track-caps: 0.18em;
+  --track-wide: 0.32em;
+
+  /* rhythm */
+  --space-2xs: 0.375rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1.25rem;
+  --space-md: 2rem;
+  --space-lg: clamp(2.5rem, 2rem + 3vw, 5rem);
+  --space-xl: clamp(4.5rem, 3.5rem + 6vw, 9rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --content-max: 72rem;
+  --prose-max: 42rem;
+
+  /* chrome */
+  --footer-h: 3.8rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-slow: 600ms;
+}
+
+/* ------------------------------------------------------------- palettes --- */
+
+/* Each palette pairs a vivid primary accent with a CONTRASTING secondary hue
+   (--accent-2) so pages read two-toned, not monochrome. Neutrals carry only a
+   whisper of tint; the accents do the talking. */
+
+/* Gallery — warm paper + ink; amber accent, slate-teal counterpoint */
+:root,
+[data-palette="gallery"] {
+  --paper: oklch(97.6% 0.005 85);
+  --wash: oklch(94.8% 0.009 85);
+  --ink: oklch(22.5% 0.008 75);
+  --muted: oklch(46% 0.014 75);
+  --line: oklch(87% 0.008 85);
+  --accent: oklch(55% 0.13 70);
+  --accent-2: oklch(46% 0.08 230);
+  --accent-soft: oklch(89.5% 0.05 75);
+}
+[data-palette="gallery"][data-mode="dark"] {
+  --paper: oklch(20.5% 0.008 75);
+  --wash: oklch(24% 0.01 75);
+  --ink: oklch(92.5% 0.006 85);
+  --muted: oklch(70% 0.012 80);
+  --line: oklch(33% 0.01 75);
+  --accent: oklch(78% 0.13 75);
+  --accent-2: oklch(73% 0.09 220);
+  --accent-soft: oklch(32% 0.05 70);
+}
+
+/* Verdant — botanical green accent, copper counterpoint */
+[data-palette="verdant"] {
+  --paper: oklch(97.2% 0.008 140);
+  --wash: oklch(94.2% 0.015 140);
+  --ink: oklch(23% 0.015 155);
+  --muted: oklch(46% 0.03 150);
+  --line: oklch(86.5% 0.016 142);
+  --accent: oklch(50% 0.16 150);
+  --accent-2: oklch(51% 0.13 60);
+  --accent-soft: oklch(90.5% 0.06 145);
+}
+[data-palette="verdant"][data-mode="dark"] {
+  --paper: oklch(20.5% 0.014 155);
+  --wash: oklch(24.5% 0.018 152);
+  --ink: oklch(93% 0.01 140);
+  --muted: oklch(70% 0.028 148);
+  --line: oklch(33.5% 0.02 150);
+  --accent: oklch(76% 0.17 150);
+  --accent-2: oklch(76% 0.12 65);
+  --accent-soft: oklch(32% 0.06 150);
+}
+
+/* Coral — vermilion accent, deep teal counterpoint */
+[data-palette="coral"] {
+  --paper: oklch(97.3% 0.008 40);
+  --wash: oklch(94.2% 0.015 35);
+  --ink: oklch(23.5% 0.018 30);
+  --muted: oklch(46% 0.035 32);
+  --line: oklch(86.5% 0.017 40);
+  --accent: oklch(58% 0.2 30);
+  --accent-2: oklch(45% 0.09 215);
+  --accent-soft: oklch(90% 0.05 35);
+}
+[data-palette="coral"][data-mode="dark"] {
+  --paper: oklch(20.5% 0.012 30);
+  --wash: oklch(24.5% 0.016 32);
+  --ink: oklch(92.5% 0.008 40);
+  --muted: oklch(70.5% 0.03 35);
+  --line: oklch(33.5% 0.018 32);
+  --accent: oklch(73% 0.15 32);
+  --accent-2: oklch(75% 0.1 210);
+  --accent-soft: oklch(33% 0.07 30);
+}
+
+/* Indigo — violet accent, ochre-gold counterpoint */
+[data-palette="indigo"] {
+  --paper: oklch(97.3% 0.006 290);
+  --wash: oklch(94.3% 0.012 285);
+  --ink: oklch(23% 0.02 285);
+  --muted: oklch(46% 0.035 285);
+  --line: oklch(86.5% 0.014 285);
+  --accent: oklch(48% 0.2 285);
+  --accent-2: oklch(52% 0.11 80);
+  --accent-soft: oklch(90.5% 0.045 290);
+}
+[data-palette="indigo"][data-mode="dark"] {
+  --paper: oklch(20% 0.018 290);
+  --wash: oklch(23.5% 0.022 288);
+  --ink: oklch(92.5% 0.009 290);
+  --muted: oklch(70.5% 0.028 285);
+  --line: oklch(33% 0.026 285);
+  --accent: oklch(75% 0.14 285);
+  --accent-2: oklch(80% 0.12 85);
+  --accent-soft: oklch(32% 0.07 285);
+}

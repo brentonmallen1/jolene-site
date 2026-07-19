@@ -1,0 +1,208 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  image: ImageMetadata; // true equirectangular source (2:1)
+  alt: string;
+}
+const { image, alt } = Astro.props;
+
+// WebGL texture limits are commonly 4096 on mobile — cap the source.
+const pano = await getImage({ src: image, width: Math.min(image.width, 4096) });
+const poster = await getImage({ src: image, width: 1200 });
+---
+
+<figure class="sphere-view" data-reveal>
+  <div
+    class="sphere-stage"
+    data-sphere
+    data-sphere-src={pano.src}
+    role="application"
+    aria-label={`360 degree view: ${alt} — drag to look around`}
+  >
+    <img src={poster.src} alt="" loading="lazy" class="sphere-poster" />
+    <span class="sphere-badge caps-label" aria-hidden="true">360°</span>
+    <button class="sphere-expand" type="button" aria-label="View fullscreen" data-sphere-expand>
+      <svg class="icon-expand" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" />
+      </svg>
+      <svg class="icon-compress" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6" />
+      </svg>
+    </button>
+  </div>
+  <figcaption class="caps-label sphere-caption">{alt} — 360°</figcaption>
+</figure>
+
+<style>
+  .sphere-view {
+    margin: 0;
+  }
+  .sphere-stage {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--wash);
+    border: 1px solid var(--accent);
+    outline: 1px solid var(--line);
+    outline-offset: 4px;
+    cursor: grab;
+  }
+  .sphere-stage :global(.pnlm-grabbing) {
+    cursor: grabbing;
+  }
+  /* fullscreen (native and faux) */
+  .sphere-stage:fullscreen {
+    border: none;
+    outline: none;
+    aspect-ratio: auto;
+  }
+  .sphere-stage.faux-full {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    aspect-ratio: auto;
+    border: none;
+    outline: none;
+  }
+  .icon-compress {
+    display: none;
+  }
+  .sphere-stage:fullscreen .icon-expand,
+  .sphere-stage.faux-full .icon-expand {
+    display: none;
+  }
+  .sphere-stage:fullscreen .icon-compress,
+  .sphere-stage.faux-full .icon-compress {
+    display: block;
+  }
+
+  .sphere-poster {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  .sphere-badge {
+    position: absolute;
+    top: 0.6rem;
+    inset-inline-start: 0.6rem;
+    z-index: 3;
+    padding: 0.35em 0.8em;
+    background: color-mix(in oklab, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    pointer-events: none;
+  }
+  .sphere-expand {
+    position: absolute;
+    top: 0.6rem;
+    inset-inline-end: 0.6rem;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    background: color-mix(in oklab, var(--paper) 85%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color var(--dur-fast) ease;
+  }
+  .sphere-expand:hover {
+    background: var(--paper);
+  }
+  .sphere-caption {
+    padding-block-start: var(--space-2xs);
+  }
+  /* pannellum chrome, tuned to the palette */
+  .sphere-stage :global(.pnlm-container),
+  .sphere-stage:global(.pnlm-container) {
+    background: var(--wash);
+  }
+  .sphere-stage :global(.pnlm-load-box),
+  .sphere-stage :global(.pnlm-controls-container) {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // True-360 sphere viewer (Pannellum, self-hosted). Lazy-initialized when the
+  // stage scrolls into view; gentle auto-rotate that stops on interaction.
+  // The corner button expands the sphere itself to fullscreen (with a fixed-
+  // overlay fallback where the Fullscreen API is unavailable, e.g. iPhones).
+  const stages = document.querySelectorAll<HTMLElement>("[data-sphere]");
+  if (stages.length) {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const wireExpand = (el: HTMLElement) => {
+      const btn = el.querySelector<HTMLButtonElement>("[data-sphere-expand]");
+      if (!btn) return;
+      const anyDoc = document as any;
+      const fsSupported = !!(el.requestFullscreen || (el as any).webkitRequestFullscreen);
+      const isActive = () =>
+        anyDoc.fullscreenElement === el ||
+        anyDoc.webkitFullscreenElement === el ||
+        el.classList.contains("faux-full");
+      const refresh = () => window.dispatchEvent(new Event("resize")); // pannellum re-measures
+      const exitFaux = () => {
+        el.classList.remove("faux-full");
+        document.documentElement.style.overflow = "";
+        refresh();
+      };
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (isActive()) {
+          if (anyDoc.fullscreenElement || anyDoc.webkitFullscreenElement) {
+            (anyDoc.exitFullscreen ?? anyDoc.webkitExitFullscreen).call(document);
+          } else {
+            exitFaux();
+          }
+        } else if (fsSupported) {
+          (el.requestFullscreen ?? (el as any).webkitRequestFullscreen).call(el);
+        } else {
+          el.classList.add("faux-full");
+          document.documentElement.style.overflow = "hidden";
+          refresh();
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && el.classList.contains("faux-full")) exitFaux();
+      });
+      document.addEventListener("fullscreenchange", refresh);
+    };
+
+    const io = new IntersectionObserver(
+      async (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          io.unobserve(el);
+          // @ts-ignore side-effect script attaches window.pannellum
+          await import("pannellum");
+          // @ts-ignore
+          await import("pannellum/build/pannellum.css");
+          el.querySelector(".sphere-poster")?.remove();
+          (window as any).pannellum.viewer(el, {
+            type: "equirectangular",
+            panorama: el.dataset.sphereSrc,
+            autoLoad: true,
+            autoRotate: reduced ? 0 : -1.5,
+            autoRotateInactivityDelay: 6000,
+            hfov: 90,
+            compass: false,
+            showControls: false,
+            mouseZoom: false, // don't hijack page scroll
+            keyboardZoom: true,
+            friction: 0.12,
+          });
+          wireExpand(el);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    stages.forEach((s) => io.observe(s));
+  }
+</script>

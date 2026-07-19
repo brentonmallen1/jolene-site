@@ -1,0 +1,253 @@
+# Sveltia CMS configuration (Decap-compatible).
+# Docs: https://github.com/sveltia/sveltia-cms
+#
+# Production login: GitHub via a small OAuth shim — see README "CMS login".
+# Local editing: open /admin in Chrome/Edge and pick "Work with Local Repository".
+
+backend:
+  name: github
+  repo: OWNER/jolene-site # ← update after pushing to GitHub
+  branch: main
+  # base_url: https://sveltia-cms-auth.YOUR-WORKER.workers.dev  # OAuth shim (see README)
+
+site_url: https://www.jolenemallendesigns.com
+display_url: https://www.jolenemallendesigns.com
+logo_url: /favicon.svg
+
+# Global media library: the whole site image tree shows up in the CMS "Assets"
+# view (hero/, about/, portfolio/, sketching/, conceptual/, textiles/, uploads/).
+# Individual image fields below override the write location + stored path format.
+media_folder: src/assets/images
+public_folder: /src/assets/images
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: settings
+    label: Site Settings
+    icon: settings
+    editor: { preview: false }
+    files:
+      - name: general
+        label: General
+        file: content/settings.yml
+        fields:
+          - { name: site_title, label: Site Title, widget: string }
+          - name: theme
+            label: Layout Theme
+            widget: select
+            options:
+              - { value: classic, label: "Classic — continuous scroll, like the original site" }
+              - { value: studio, label: "Studio — editorial, serif display, side rail" }
+              - { value: exhibit, label: "Exhibit — gallery shelves, horizontal browsing" }
+            default: classic
+          - name: palette
+            label: Color Palette
+            widget: select
+            options:
+              - { value: gallery, label: "Gallery — warm white & ink, amber accent" }
+              - { value: verdant, label: "Verdant — saturated botanical green" }
+              - { value: coral, label: "Coral — vivid coral & clay" }
+              - { value: indigo, label: "Indigo — deep violet-blue" }
+            default: gallery
+          - name: default_mode
+            label: Default Mode
+            widget: select
+            options: [light, dark]
+            default: light
+            hint: Visitors can still switch modes with the toggle; this is the starting point.
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: subheading, label: Subheading, widget: string }
+              - name: image
+                label: Hero Image
+                widget: image
+                media_folder: ../src/assets/images/hero
+                public_folder: ../src/assets/images/hero
+              - { name: image_alt, label: Image Description (alt text), widget: string, required: false }
+          - name: footer
+            label: Footer
+            widget: object
+            fields:
+              - { name: email, label: Email, widget: string }
+              - { name: linkedin, label: LinkedIn URL, widget: string }
+
+  - name: about
+    label: About
+    icon: person
+    editor: { preview: false }
+    files:
+      - name: about
+        label: About
+        file: content/about.md
+        fields:
+          - { name: title, label: Section Title, widget: string }
+          - { name: order, label: Order, widget: number, default: 1 }
+          - name: headshot
+            label: Headshot
+            widget: image
+            media_folder: ../src/assets/images/about
+            public_folder: ../src/assets/images/about
+          - { name: headshot_alt, label: Headshot Description, widget: string, required: false }
+          - name: badges
+            label: Badges (certifications)
+            widget: list
+            required: false
+            fields:
+              - name: image
+                label: Badge Image
+                widget: image
+                media_folder: ../src/assets/images/about
+                public_folder: ../src/assets/images/about
+              - { name: alt, label: Description, widget: string, required: false }
+          - { name: body, label: Bio, widget: markdown }
+
+  - name: galleries
+    label: Gallery Sections
+    icon: photo_library
+    folder: content/galleries
+    extension: yml
+    format: yaml
+    create: true
+    sortable_fields: [order, title]
+    summary: "{{title}}"
+    identifier_field: title
+    editor: { preview: false }
+    fields:
+      - { name: title, label: Section Title, widget: string }
+      - name: order
+        label: Order
+        widget: number
+        value_type: float
+        hint: "Position on the page. Fixed sections: About=1, Conceptual=3, Textiles=5, Resume=6. Use decimals to slot between them (e.g. 4.5 shows after Sketching, before Textiles)."
+      - name: layout
+        label: Layout
+        widget: select
+        options:
+          - { value: masonry, label: "Masonry — flowing columns" }
+          - { value: rows, label: "Rows — justified, like a photo album" }
+          - { value: mosaic, label: "Mosaic — mixed sizes with featured images" }
+          - { value: squares, label: "Squares — uniform grid (like Textiles)" }
+        default: masonry
+      - name: notes
+        label: Footnotes
+        widget: list
+        required: false
+        field: { name: note, label: Note, widget: string }
+      - name: gallery
+        label: Images
+        widget: list
+        summary: "{{fields.alt}}"
+        fields:
+          - name: image
+            label: Image
+            widget: image
+            media_folder: ../../src/assets/images/uploads
+            public_folder: ../../src/assets/images/uploads
+          - { name: alt, label: Description (alt text), widget: string, required: false }
+          - name: view
+            label: Display
+            widget: select
+            options:
+              - { value: still, label: "Still image" }
+              - { value: wide, label: "Wide — drag to explore (flat)" }
+              - { value: "360", label: "360° — full look-around" }
+            default: still
+            hint: Wide and 360° images appear in the "Interactive views" row below the gallery. 360° needs a true equirectangular image (2:1 aspect; looks bowed when viewed flat).
+
+  - name: conceptual
+    label: Conceptual Projects
+    icon: architecture
+    folder: content/conceptual
+    extension: md
+    format: frontmatter
+    create: true
+    sortable_fields: [order, title]
+    summary: "{{label}} — {{title}}"
+    editor: { preview: false }
+    fields:
+      - { name: title, label: Project Title, widget: string }
+      - { name: label, label: Kicker (e.g. "Project One"), widget: string }
+      - { name: order, label: Order, widget: number }
+      - { name: brief, label: Brief (the assignment), widget: text }
+      - name: layout
+        label: Gallery Layout
+        widget: select
+        options:
+          - { value: masonry, label: "Masonry — flowing columns" }
+          - { value: rows, label: "Rows — justified, like a photo album" }
+          - { value: mosaic, label: "Mosaic — mixed sizes with featured images" }
+          - { value: squares, label: "Squares — uniform grid" }
+        default: masonry
+      - name: gallery
+        label: Images
+        widget: list
+        summary: "{{fields.alt}}"
+        fields:
+          - name: image
+            label: Image
+            widget: image
+            media_folder: ../../src/assets/images/conceptual
+            public_folder: ../../src/assets/images/conceptual
+          - { name: alt, label: Description (alt text), widget: string, required: false }
+          - name: view
+            label: Display
+            widget: select
+            options:
+              - { value: still, label: "Still image" }
+              - { value: wide, label: "Wide — drag to explore (flat)" }
+              - { value: "360", label: "360° — full look-around" }
+            default: still
+            hint: Wide and 360° images appear in the "Interactive views" row below the gallery. 360° needs a true equirectangular image (2:1 aspect; looks bowed when viewed flat).
+      - { name: body, label: Project Write-up, widget: markdown }
+
+  - name: textiles
+    label: Textile Patterns
+    icon: texture
+    folder: content/textiles
+    extension: yml
+    format: yaml
+    create: true
+    sortable_fields: [order, name]
+    summary: "{{name}} — {{inspiration}}"
+    identifier_field: name
+    editor: { preview: false }
+    fields:
+      - { name: name, label: Pattern Name, widget: string }
+      - { name: inspiration, label: Inspired By, widget: string }
+      - { name: order, label: Order, widget: number }
+      - name: swatches
+        label: Swatches
+        widget: list
+        summary: "{{fields.colorway}}"
+        fields:
+          - name: image
+            label: Swatch Image
+            widget: image
+            media_folder: ../../src/assets/images/textiles
+            public_folder: ../../src/assets/images/textiles
+          - { name: colorway, label: Colorway Name, widget: string }
+
+  - name: resume
+    label: Resume
+    icon: description
+    editor: { preview: false }
+    files:
+      - name: resume
+        label: Resume
+        file: content/resume.yml
+        fields:
+          - { name: title, label: Section Title, widget: string }
+          - { name: order, label: Order, widget: number, default: 6 }
+          - name: pdf
+            label: Resume PDF
+            widget: file
+            media_folder: ../public
+            public_folder: /
+            hint: Upload a PDF; it is embedded on the page with a download button.
+          - { name: email, label: Contact Email, widget: string }

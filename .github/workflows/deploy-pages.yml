@@ -1,0 +1,46 @@
+# Deploys the site to GitHub Pages.
+#
+# Inert until you enable it: repo Settings → Pages → Source: "GitHub Actions".
+# The site must be served from a domain root (custom domain or a
+# <username>.github.io repo) — see README "Option B — GitHub Pages".
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build site
+        uses: withastro/action@v3
+        with:
+          node-version: 22
+        env:
+          # canonical URL baked into the build (og tags etc.)
+          SITE_URL: ${{ vars.SITE_URL || 'https://www.jolenemallendesigns.com' }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

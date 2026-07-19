@@ -1,0 +1,90 @@
+title: Portfolio
+order: 2
+layout: mosaic
+notes:
+  - '* All CGI imagery owned by PIX-US — responsible for all design and propping direction'
+gallery:
+  - image: ../../src/assets/images/portfolio/cabin-interior.webp
+    alt: Cabin Interior
+    view: still
+  - image: ../../src/assets/images/portfolio/white-stairs.webp
+    alt: White Stairs
+    view: still
+  - image: ../../src/assets/images/portfolio/mid-century-la.webp
+    alt: Mid Century LA
+    view: still
+  - image: ../../src/assets/images/portfolio/zen-bathroom.webp
+    alt: Zen Bathroom
+    view: still
+  - image: ../../src/assets/images/portfolio/so-cal-boho-inside.webp
+    alt: So Cal Boho Inside
+    view: still
+  - image: ../../src/assets/images/portfolio/so-cal-boho-outside.webp
+    alt: So Cal Boho Outside
+    view: still
+  - image: ../../src/assets/images/portfolio/boho-greenscape.webp
+    alt: boho Greenscape
+    view: still
+  - image: ../../src/assets/images/portfolio/white-kitchen-2.webp
+    alt: White Kitchen 2
+    view: still
+  - image: ../../src/assets/images/portfolio/cal-faucets-white-kitchen.webp
+    alt: Cal Faucets White Kitchen
+    view: still
+  - image: ../../src/assets/images/portfolio/bay-window.webp
+    alt: Bay Window
+    view: still
+  - image: ../../src/assets/images/portfolio/green-kitchen.webp
+    alt: Green Kitchen
+    view: still
+  - image: ../../src/assets/images/portfolio/pnw-corner-view.webp
+    alt: PNW Corner View
+    view: still
+  - image: ../../src/assets/images/portfolio/herb-kitchen.webp
+    alt: Herb Kitchen
+    view: still
+  - image: ../../src/assets/images/portfolio/brown-traditional-kitchen.webp
+    alt: Brown Traditional Kitchen
+    view: still
+  - image: ../../src/assets/images/portfolio/warm-boho-interior.webp
+    alt: Warm Boho Interior
+    view: still
+  - image: ../../src/assets/images/portfolio/warm-tone-deck.webp
+    alt: warm tone deck
+    view: still
+  - image: ../../src/assets/images/portfolio/white-kitchen.webp
+    alt: White Kitchen
+    view: still
+  - image: ../../src/assets/images/portfolio/traditional-fireplace.webp
+    alt: Traditional Fireplace
+    view: still
+  - image: ../../src/assets/images/portfolio/transitional-staircase-2.webp
+    alt: Transitional Staircase 2
+    view: still
+  - image: ../../src/assets/images/portfolio/shed-spring.webp
+    alt: Shed Spring
+    view: still
+  - image: ../../src/assets/images/portfolio/shed-summer.webp
+    alt: Shed Summer
+    view: still
+  - image: ../../src/assets/images/portfolio/shed-fall.webp
+    alt: Shed Fall
+    view: still
+  - image: ../../src/assets/images/portfolio/shed-winter.webp
+    alt: Shed Winter
+    view: still
+  - image: ../../src/assets/images/portfolio/golfcourse-railing.webp
+    alt: Golfcourse Railing
+    view: still
+  - image: ../../src/assets/images/portfolio/phillips-statue.webp
+    alt: Phillips Statue
+    view: still
+  - image: ../../src/assets/images/portfolio/big-house-day-360.jpg
+    alt: House Concept — daytime
+    view: '360'
+  - image: ../../src/assets/images/portfolio/big-house-night-360.jpg
+    alt: House Concept — evening
+    view: '360'
+  - image: ../../src/assets/images/portfolio/pix-kitchen-360.jpg
+    alt: Kitchen Concept
+    view: '360'

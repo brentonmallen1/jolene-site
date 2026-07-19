@@ -1,0 +1,9 @@
+# keep the image's linux node_modules from being clobbered by the mac ones
+node_modules
+dist
+.astro
+.git
+images
+site-archive
+.env
+.DS_Store

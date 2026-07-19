@@ -1,0 +1,20 @@
+name: "Tilly"
+inspiration: "Killer Whales"
+order: 1
+swatches:
+  - image: ../../src/assets/images/textiles/tilly/tilly-mirrored-70cm-new-square.webp
+    colorway: "Main"
+  - image: ../../src/assets/images/textiles/tilly/tilly-deepsea-square.webp
+    colorway: "Deepsea"
+  - image: ../../src/assets/images/textiles/tilly/tilly-sand-square.webp
+    colorway: "Sand"
+  - image: ../../src/assets/images/textiles/tilly/tilly-seaweed-square.webp
+    colorway: "Seaweed"
+  - image: ../../src/assets/images/textiles/tilly/tilly-sting-ray-square.webp
+    colorway: "Stingray"
+  - image: ../../src/assets/images/textiles/tilly/tilly-shark-skin-square.webp
+    colorway: "Shark Skin"
+  - image: ../../src/assets/images/textiles/tilly/tilly-seafoam-square.webp
+    colorway: "Seafoam"
+  - image: ../../src/assets/images/textiles/tilly/tilly-urchin-square.webp
+    colorway: "Urchin"

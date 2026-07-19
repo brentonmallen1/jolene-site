@@ -1,0 +1,20 @@
+name: "Naomi"
+inspiration: "The Southwest"
+order: 3
+swatches:
+  - image: ../../src/assets/images/textiles/naomi/w15-kets-jm-naomi-square.webp
+    colorway: "Main"
+  - image: ../../src/assets/images/textiles/naomi/naomi-latte-square.webp
+    colorway: "Latte"
+  - image: ../../src/assets/images/textiles/naomi/naomi-brick-square.webp
+    colorway: "Brick"
+  - image: ../../src/assets/images/textiles/naomi/naomi-rust-2-square.webp
+    colorway: "Rust"
+  - image: ../../src/assets/images/textiles/naomi/naomi-cocoa-square.webp
+    colorway: "Cocoa"
+  - image: ../../src/assets/images/textiles/naomi/naomi-cocoa-square-2.webp
+    colorway: "Clay"
+  - image: ../../src/assets/images/textiles/naomi/naomi-slate-square.webp
+    colorway: "Slate"
+  - image: ../../src/assets/images/textiles/naomi/naomi-seaglass-square.webp
+    colorway: "Seaglass"

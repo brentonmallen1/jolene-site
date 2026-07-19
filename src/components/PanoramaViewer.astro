@@ -1,0 +1,169 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  lightboxSrc: string;
+  lightboxWidth: number;
+  lightboxHeight: number;
+}
+const { image, alt, lightboxSrc, lightboxWidth, lightboxHeight } = Astro.props;
+
+// Tall-enough rendition for panning inside the frame (displayed at ~2x frame height).
+const pan = await getImage({ src: image, height: Math.min(image.height, 1000) });
+---
+
+<figure class="wide-view" data-reveal>
+  <div
+    class="wide-window"
+    data-panwindow
+    role="img"
+    tabindex="0"
+    aria-label={`${alt} — drag or use arrow keys to pan`}
+    aria-keyshortcuts="ArrowLeft ArrowRight"
+  >
+    <img src={pan.src} alt="" draggable="false" loading="lazy" class="wide-img" />
+    <span class="wide-hint caps-label" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M2 12h20M2 12l4-4M2 12l4 4M22 12l-4-4M22 12l-4 4" />
+      </svg>
+      drag to explore
+    </span>
+    <a
+      class="wide-expand"
+      href={lightboxSrc}
+      data-pswp-width={lightboxWidth}
+      data-pswp-height={lightboxHeight}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`View larger: ${alt}`}
+    >
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" />
+      </svg>
+    </a>
+  </div>
+  <figcaption class="caps-label wide-caption">{alt}</figcaption>
+</figure>
+
+<style>
+  .wide-view {
+    margin: 0;
+  }
+  .wide-window {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--wash);
+    border: 1px solid var(--accent);
+    outline: 1px solid var(--line);
+    outline-offset: 4px;
+    touch-action: pan-y; /* keep vertical page scroll working over the frame */
+    cursor: grab;
+  }
+  .wide-window.dragging {
+    cursor: grabbing;
+  }
+  /* extra specificity: shared gallery `img { inline-size: 100% }` must not win */
+  .wide-window .wide-img,
+  .wide-window :global(img.wide-img) {
+    position: absolute;
+    inset-block: 0;
+    block-size: 100%;
+    inline-size: auto;
+    max-inline-size: none;
+    translate: var(--pan-x, 0) 0;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .wide-hint {
+    position: absolute;
+    inset-block-end: 0.75rem;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.45em 1em;
+    white-space: nowrap;
+    background: color-mix(in oklab, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    pointer-events: none;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .wide-window.seen .wide-hint {
+    opacity: 0;
+  }
+  .wide-expand {
+    position: absolute;
+    top: 0.6rem;
+    inset-inline-end: 0.6rem;
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    background: color-mix(in oklab, var(--paper) 85%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    transition: background-color var(--dur-fast) ease;
+  }
+  .wide-expand:hover {
+    background: var(--paper);
+  }
+  .wide-caption {
+    padding-block-start: var(--space-2xs);
+  }
+</style>
+
+<script>
+  // Drag-to-pan for wide images. No ambient motion — the image sits centered
+  // until the visitor drags.
+  document.querySelectorAll<HTMLElement>("[data-panwindow]").forEach((win) => {
+    const img = win.querySelector<HTMLImageElement>(".wide-img");
+    if (!img) return;
+
+    let x = 0;
+    const overflow = () => Math.max(0, img.scrollWidth - win.clientWidth);
+    const apply = () => img.style.setProperty("--pan-x", `${x}px`);
+
+    const center = () => {
+      x = -overflow() / 2;
+      apply();
+    };
+    img.complete ? center() : img.addEventListener("load", center, { once: true });
+
+    // keyboard panning (left/right arrows, larger steps with Shift)
+    win.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      win.classList.add("seen");
+      const step = (e.shiftKey ? 160 : 48) * (e.key === "ArrowLeft" ? 1 : -1);
+      x = Math.min(0, Math.max(-overflow(), x + step));
+      apply();
+    });
+
+    win.addEventListener("pointerdown", (e) => {
+      if ((e.target as HTMLElement).closest(".wide-expand")) return;
+      win.classList.add("dragging", "seen");
+      win.setPointerCapture(e.pointerId);
+      const startX = e.clientX;
+      const base = x;
+      const move = (ev: PointerEvent) => {
+        x = Math.min(0, Math.max(-overflow(), base + (ev.clientX - startX)));
+        apply();
+      };
+      const up = () => {
+        win.classList.remove("dragging");
+        win.removeEventListener("pointermove", move);
+      };
+      win.addEventListener("pointermove", move);
+      win.addEventListener("pointerup", up, { once: true });
+      win.addEventListener("pointercancel", up, { once: true });
+    });
+  });
+</script>

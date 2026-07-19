@@ -1,0 +1,27 @@
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    init: true # forward Ctrl+C so the container dies cleanly
+    ports:
+      - "${DEV_PORT:-4321}:4321"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    environment:
+      # host file events (CMS saves use atomic renames) don't reliably reach
+      # the container — poll the bind mount instead
+      WATCH_POLLING: "1"
+
+  preview:
+    build:
+      context: .
+      target: preview
+    init: true
+    ports:
+      - "${PREVIEW_PORT:-8080}:80"
+    profiles: [preview]
+
+volumes:
+  node_modules:

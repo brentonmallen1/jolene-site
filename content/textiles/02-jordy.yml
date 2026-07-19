@@ -1,0 +1,20 @@
+name: "Jordy"
+inspiration: "Space Travel"
+order: 2
+swatches:
+  - image: ../../src/assets/images/textiles/jordy/jordy-diagonal-35cm-bw-square.webp
+    colorway: "Main"
+  - image: ../../src/assets/images/textiles/jordy/jordy-graphite-square.webp
+    colorway: "Rover"
+  - image: ../../src/assets/images/textiles/jordy/jordy-navy-square.webp
+    colorway: "Neptune"
+  - image: ../../src/assets/images/textiles/jordy/jordy-teal-square.webp
+    colorway: "Cosmos"
+  - image: ../../src/assets/images/textiles/jordy/jordy-teal-brown-square.webp
+    colorway: "Europa"
+  - image: ../../src/assets/images/textiles/jordy/jordy-moss-square.webp
+    colorway: "Intersteller"
+  - image: ../../src/assets/images/textiles/jordy/jordy-burgundy-square.webp
+    colorway: "Mars"
+  - image: ../../src/assets/images/textiles/jordy/jordy-purple-square-edited.webp
+    colorway: "Nebula"

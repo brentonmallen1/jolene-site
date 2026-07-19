@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
+import Base from "../layouts/Base.astro";
+
+const [settingsEntry] = await getCollection("settings");
+const settings = settingsEntry.data;
+
+// Only the active theme is imported, so the other theme's CSS (and the studio
+// serif font) never ships to the built page.
+const ThemePage =
+  settings.theme === "studio"
+    ? (await import("../themes/studio/StudioPage.astro")).default
+    : settings.theme === "exhibit"
+      ? (await import("../themes/exhibit/ExhibitPage.astro")).default
+      : (await import("../themes/classic/ClassicPage.astro")).default;
+
+const [aboutEntry] = await getCollection("about");
+const { Content: AboutContent } = await render(aboutEntry);
+
+const galleries = await getCollection("galleries");
+
+const conceptual = await Promise.all(
+  (await getCollection("conceptual"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (entry) => ({
+      ...entry.data,
+      slug: entry.id,
+      Content: (await render(entry)).Content,
+    }))
+);
+
+const textiles = (await getCollection("textiles"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((t) => t.data);
+
+const [resumeEntry] = await getCollection("resume");
+const resume = resumeEntry.data;
+
+// One ordered list drives nav, numbering, and rendering in both themes.
+// Gallery sections come from the CMS (content/galleries/) and can be created,
+// reordered (via `order`, fractions allowed), or deleted without code changes.
+const CONCEPTUAL_ORDER = 3;
+const TEXTILES_ORDER = 5;
+
+type Section = { type: string; id: string; title: string; order: number; data?: any };
+const sections: Section[] = [
+  { type: "about", id: "about", title: aboutEntry.data.title, order: aboutEntry.data.order,
+    data: { ...aboutEntry.data, Content: AboutContent } },
+  ...galleries.map((g) => ({
+    type: "gallery", id: g.id, title: g.data.title, order: g.data.order, data: g.data,
+  })),
+  { type: "conceptual", id: "conceptual", title: "Conceptual", order: CONCEPTUAL_ORDER,
+    data: conceptual },
+  { type: "textiles", id: "textiles", title: "Textiles", order: TEXTILES_ORDER,
+    data: textiles },
+  { type: "resume", id: "resume", title: resume.title, order: resume.order, data: resume },
+].sort((a, b) => a.order - b.order);
+
+const site = { settings, sections };
+
+const ogImage = await getImage({
+  src: settings.hero.image,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "jpeg",
+});
+
+const description =
+  "Portfolio of Jolene Mallen — interior designer in North Carolina. Residential and commercial design, conceptual projects, sketching, and textile patterns.";
+---
+
+<Base
+  title={settings.site_title}
+  description={description}
+  palette={settings.palette}
+  defaultMode={settings.default_mode}
+  ogImage={ogImage.src}
+>
+  <ThemePage site={site} />
+</Base>

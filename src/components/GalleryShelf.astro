@@ -1,0 +1,301 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import PanoramaViewer from "./PanoramaViewer.astro";
+import Sphere360 from "./Sphere360.astro";
+
+interface Item {
+  image: ImageMetadata;
+  alt: string;
+  caption?: string;
+  view?: "still" | "wide" | "360";
+}
+interface Props {
+  id: string;
+  items: Item[];
+  label?: string;
+}
+const { id, items, label } = Astro.props;
+
+// Pre-compute the large (lightbox) rendition for each item.
+const LB_WIDTH = 1800;
+const enriched = await Promise.all(
+  items.map(async (item) => {
+    const scale = Math.min(1, LB_WIDTH / item.image.width);
+    const large = await getImage({
+      src: item.image,
+      width: Math.round(item.image.width * scale),
+    });
+    return {
+      ...item,
+      largeSrc: large.src,
+      lbWidth: Math.round(item.image.width * scale),
+      lbHeight: Math.round(item.image.height * scale),
+    };
+  })
+);
+---
+
+{/* two-row tiled mosaic that scrolls sideways; interactive (wide/360) pieces
+    hang inline as larger framed tiles */}
+<div class="shelf" data-shelf>
+  <div
+    class="shelf-strip"
+    data-shelf-strip
+    data-pswp-shelf={id}
+    tabindex="0"
+    role="region"
+    aria-label={`${label ?? "Gallery"} — horizontal shelf, scrolls sideways`}
+  >
+    {enriched.map((item, i) =>
+      item.view === "360" ? (
+        <div class="shelf-item shelf-item--frame">
+          <Sphere360 image={item.image} alt={item.alt} />
+        </div>
+      ) : item.view === "wide" ? (
+        <div class="shelf-item shelf-item--frame">
+          <PanoramaViewer
+            image={item.image}
+            alt={item.alt}
+            lightboxSrc={item.largeSrc}
+            lightboxWidth={item.lbWidth}
+            lightboxHeight={item.lbHeight}
+          />
+        </div>
+      ) : (
+        <figure class="shelf-item" data-reveal style={`--stagger: ${(i % 8) * 35}ms`}>
+          <a
+            href={item.largeSrc}
+            data-pswp-width={item.lbWidth}
+            data-pswp-height={item.lbHeight}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`View larger: ${item.alt}`}
+          >
+            <Image
+              src={item.image}
+              alt={item.alt}
+              widths={[400, 800]}
+              sizes="400px"
+              loading="lazy"
+            />
+          </a>
+          {item.caption && <figcaption class="shelf-caption caps-label">{item.caption}</figcaption>}
+        </figure>
+      )
+    )}
+  </div>
+  <button class="shelf-arrow shelf-arrow--prev" type="button" aria-label="Scroll shelf backward" data-shelf-prev>
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.5 5.5 8 12l6.5 6.5" />
+    </svg>
+  </button>
+  <button class="shelf-arrow shelf-arrow--next" type="button" aria-label="Scroll shelf forward" data-shelf-next>
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9.5 5.5 6.5 6.5-6.5 6.5" />
+    </svg>
+  </button>
+</div>
+
+<style>
+  .shelf {
+    /* one mosaic cell; the strip is two rows of these */
+    --tile: clamp(6.5rem, 15vh, 9.5rem);
+    --tile-gap: var(--space-2xs);
+    position: relative;
+  }
+
+  .shelf-strip {
+    display: grid;
+    grid-auto-flow: column dense;
+    grid-template-rows: repeat(2, var(--tile));
+    grid-auto-columns: var(--tile);
+    gap: var(--tile-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+    padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .shelf-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shelf-item {
+    position: relative;
+    margin: 0;
+    scroll-snap-align: start;
+    min-inline-size: 0;
+  }
+  /* mosaic rhythm: a big feature, squares, then a wide tile */
+  .shelf-item:nth-child(6n + 1) {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+  .shelf-item:nth-child(6n + 4) {
+    grid-column: span 2;
+  }
+  .shelf-item a {
+    display: block;
+    block-size: 100%;
+    outline-offset: 2px;
+  }
+  .shelf-item :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    background: var(--wash); /* tinted box while the image decodes */
+    transition: opacity var(--dur-fast) ease;
+  }
+  .shelf-item > a:hover :global(img) {
+    opacity: 0.92;
+  }
+  .shelf-caption {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    padding: 0.3em 0.6em;
+    background: color-mix(in oklab, var(--paper) 82%, transparent);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+  }
+
+  /* framed interactive pieces (wide pans, 360 spheres): a large 3×2 tile */
+  .shelf-item--frame {
+    grid-row: span 2;
+    grid-column: span 3;
+    padding: 5px; /* room for the frame's offset outline */
+  }
+  .shelf-item--frame > :global(figure) {
+    block-size: 100%;
+  }
+  .shelf-item--frame :global(.sphere-stage),
+  .shelf-item--frame :global(.wide-window) {
+    aspect-ratio: auto;
+    block-size: 100%;
+  }
+  .shelf-item--frame :global(figcaption) {
+    /* badge + aria labels carry this info; a dangling caption breaks the tiles */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .shelf-item--frame :global(img) {
+    background: none;
+  }
+
+  /* edge fades — hint that there is more shelf in that direction */
+  .shelf::before,
+  .shelf::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inline-size: clamp(1.5rem, 4vw, 3rem);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .shelf::before {
+    inset-inline-start: 0;
+    background: linear-gradient(to right, var(--shelf-fade, var(--paper)), transparent);
+  }
+  .shelf::after {
+    inset-inline-end: 0;
+    background: linear-gradient(to left, var(--shelf-fade, var(--paper)), transparent);
+  }
+  .shelf.at-start::before,
+  .shelf.at-end::after {
+    opacity: 0;
+  }
+
+  .shelf-arrow {
+    position: absolute;
+    top: calc(var(--tile) + var(--tile-gap) / 2);
+    translate: 0 -50%;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    transition: opacity var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+  }
+  .shelf-arrow:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .shelf-arrow--prev {
+    inset-inline-start: 0.75rem;
+  }
+  .shelf-arrow--next {
+    inset-inline-end: 0.75rem;
+  }
+  .shelf.at-start .shelf-arrow--prev,
+  .shelf.at-end .shelf-arrow--next,
+  .shelf.no-scroll .shelf-arrow {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (hover: none) {
+    .shelf-arrow {
+      display: none; /* touch: swiping is the affordance */
+    }
+  }
+
+  /* scroll reveal (horizontal: tiles animate in as they're swiped into view) */
+  .shelf-item[data-reveal] {
+    opacity: 0;
+    translate: 0 14px;
+    transition:
+      opacity var(--dur-slow) var(--ease-out) var(--stagger, 0ms),
+      translate var(--dur-slow) var(--ease-out) var(--stagger, 0ms);
+  }
+  .shelf-item[data-reveal].in-view {
+    opacity: 1;
+    translate: 0 0;
+  }
+</style>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  // Scoped to data-pswp-shelf so a page that also renders GalleryGrid
+  // (data-pswp-gallery) never binds two lightboxes to the same links.
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "[data-pswp-shelf]",
+    children: "a[data-pswp-width]",
+    pswpModule: () => import("photoswipe"),
+    bgOpacity: 0.96,
+    padding: { top: 24, bottom: 24, left: 12, right: 12 },
+  });
+  lightbox.init();
+
+  // Arrow paging + edge-fade state.
+  document.querySelectorAll<HTMLElement>("[data-shelf]").forEach((shelf) => {
+    const strip = shelf.querySelector<HTMLElement>("[data-shelf-strip]");
+    if (!strip) return;
+    const update = () => {
+      const max = strip.scrollWidth - strip.clientWidth;
+      shelf.classList.toggle("at-start", strip.scrollLeft < 4);
+      shelf.classList.toggle("at-end", strip.scrollLeft > max - 4);
+      shelf.classList.toggle("no-scroll", max < 8);
+    };
+    strip.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+
+    const page = (dir: number) =>
+      strip.scrollBy({ left: dir * strip.clientWidth * 0.85, behavior: "smooth" });
+    shelf.querySelector("[data-shelf-prev]")?.addEventListener("click", () => page(-1));
+    shelf.querySelector("[data-shelf-next]")?.addEventListener("click", () => page(1));
+  });
+</script>
