@@ -2,6 +2,10 @@
 // Sveltia CMS admin. Served as an Astro page so /admin works in dev too
 // (public/ files don't get directory-index resolution from the dev server).
 // The CMS bundle + config stay in public/admin/.
+
+// import.meta.env.BASE_URL doesn't reliably carry a trailing slash — normalize
+// before joining so we never end up with e.g. "/jolene-siteadmin/config.yml".
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <!doctype html>
@@ -11,12 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Content Manager — Jolene Mallen Designs</title>
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
-    <link
-      rel="cms-config-url"
-      type="text/yaml"
-      href={`${import.meta.env.BASE_URL}admin/config.yml`}
-    />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="cms-config-url" type="text/yaml" href={`${base}/admin/config.yml`} />
   </head>
   <body>
     <script is:inline>
@@ -34,7 +34,6 @@
         }
       } catch {}
     </script>
-    <script is:inline type="module" src={`${import.meta.env.BASE_URL}admin/sveltia-cms.js`}
-    ></script>
+    <script is:inline type="module" src={`${base}/admin/sveltia-cms.js`}></script>
   </body>
 </html>

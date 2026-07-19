@@ -37,9 +37,11 @@ const textiles = (await getCollection("textiles"))
 const [resumeEntry] = await getCollection("resume");
 // CMS stores site-root paths (e.g. "/resume.pdf"); re-root them under BASE_URL
 // so the link still resolves when served from a GitHub Pages project subpath.
+// BASE_URL doesn't reliably carry a trailing slash, so normalize before joining.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const resume = {
   ...resumeEntry.data,
-  pdf: `${import.meta.env.BASE_URL}${resumeEntry.data.pdf.replace(/^\//, "")}`,
+  pdf: `${base}/${resumeEntry.data.pdf.replace(/^\//, "")}`,
 };
 
 // One ordered list drives nav, numbering, and rendering in both themes.

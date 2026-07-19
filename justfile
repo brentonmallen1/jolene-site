@@ -34,6 +34,13 @@ build:
 check:
     docker compose run --rm --no-deps dev sh -c "NODE_OPTIONS=--max-old-space-size=4096 npx astro check && npm run build"
 
+# Commit all changes and push to trigger the Pages deploy (new images auto-LFS via .gitattributes)
+publish message="content: site update":
+    git add -A
+    git diff --cached --quiet || git commit -m "{{message}}"
+    git push -u origin main
+    @echo "Pushed. Watch the deploy: $(git remote get-url origin | sed -e 's#^git@github.com:#https://github.com/#' -e 's#\.git$##')/actions"
+
 # Re-run the one-time Wix content import (overwrites content/ — CMS edits are lost!)
 import:
     python3 scripts/import-content.py
