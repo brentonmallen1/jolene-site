@@ -66,7 +66,7 @@ Then re-run the deploy workflow (push a commit, or `gh workflow run deploy-pages
 ```
 curl -sI https://www.jolenemallendesigns.com/ | head -1        # 200
 curl -sI https://www.jolenemallendesigns.com/favicon.svg       # 200
-curl -sI https://www.jolenemallendesigns.com/admin             # redirects to /admin/, 200
+curl -sI https://www.jolenemallendesigns.com/admin             # 404 — the CMS is local-only, stripped from builds
 curl -sI https://www.jolenemallendesigns.com/resume.pdf        # 200
 ```
 
