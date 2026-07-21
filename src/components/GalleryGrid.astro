@@ -222,15 +222,26 @@ const widths = variant === "squares" ? [240, 480] : [420, 760, 1100];
 
   .gallery-item a {
     display: block;
+    position: relative;
     outline-offset: 2px;
+  }
+  .gallery-item > a:hover,
+  .gallery-item > a:focus-visible {
+    z-index: 1;
   }
   .gallery-item :global(img) {
     inline-size: 100%;
     background: var(--wash); /* tinted box while the image decodes — no hard pop-in */
-    transition: opacity var(--dur-fast) ease, scale var(--dur-slow) var(--ease-out);
+    transition:
+      scale var(--dur-slow) var(--ease-out),
+      box-shadow var(--dur-fast) ease;
   }
-  .gallery-item > a:hover :global(img) {
-    opacity: 0.92;
+  .gallery-item > a:hover :global(img),
+  .gallery-item > a:focus-visible :global(img) {
+    scale: 1.025;
+    box-shadow:
+      0 8px 16px -8px oklch(0% 0 0 / 35%),
+      0 0 0 1px color-mix(in oklab, var(--accent) 45%, transparent);
   }
 
   /* scroll reveal */

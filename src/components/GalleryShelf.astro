@@ -138,18 +138,25 @@ const enriched = await Promise.all(
   }
   .shelf-item a {
     display: block;
+    position: relative;
     block-size: 100%;
     outline-offset: 2px;
+  }
+  .shelf-item > a:hover,
+  .shelf-item > a:focus-visible {
+    z-index: 1;
   }
   .shelf-item :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
     background: var(--wash); /* tinted box while the image decodes */
-    transition: opacity var(--dur-fast) ease;
+    transition: scale var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) ease;
   }
-  .shelf-item > a:hover :global(img) {
-    opacity: 0.92;
+  .shelf-item > a:hover :global(img),
+  .shelf-item > a:focus-visible :global(img) {
+    scale: 1.04;
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 65%, transparent);
   }
   .shelf-caption {
     position: absolute;
